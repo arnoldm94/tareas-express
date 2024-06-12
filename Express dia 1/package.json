@@ -1,0 +1,17 @@
+{
+  "name": "express-dia-1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start1": "nodemon e1.js",
+    "start2": "nodemon e2.js",
+    "start3": "nodemon e3.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.3"
+  }
+}
