@@ -18,21 +18,12 @@ const JSON = {
   ],
 };
 
+//get productos
 app.get("/products", (req, res) => {
   res.send(JSON);
 });
 
-//Actualizar Producto
-app.post("/products/modify/:id", (req, res) => {
-  const newProduct = {
-    id: JSON.items.length + 1,
-    nombre: "Crazy taxi",
-    precio: 125,
-  };
-  JSON.items.push(newProduct);
-  res.send(JSON);
-});
-
+//post new product
 app.post("/products/newproduct", (req, res) => {
   const newProduct = {
     id: JSON.items.length + 1,
@@ -41,4 +32,22 @@ app.post("/products/newproduct", (req, res) => {
   };
   JSON.items.push(newProduct);
   res.send(JSON);
+});
+
+//Actualizar Producto
+app.put("/products/modify/:id", (req, res) => {
+  const found = req.params;
+  JSON.items.forEach((f) => {
+    if (f.id == found.id) {
+      res.send("Update the product: " + f.nombre);
+    }
+  });
+});
+
+//Eliminar Producto
+app.delete("/products/delete/:id", (req, res) => {
+  const productsarray = JSON.items;
+  const filterbyID = productsarray.filter((f) => f.id !== +req.params.id);
+  console.log("Deleted by Id: " + req.params.id);
+  res.status(200).send(filterbyID);
 });
