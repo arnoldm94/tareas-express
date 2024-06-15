@@ -51,3 +51,34 @@ app.delete("/products/delete/:id", (req, res) => {
   console.log("Deleted by Id: " + req.params.id);
   res.status(200).send(filterbyID);
 });
+
+//crear filtro por precio
+app.get("/filterProductByPrice", (req, res) => {
+  const productos = JSON.items;
+  if (productos.length !== 0) {
+    res.status(200).json({
+      description: "Productos entre 100 y 200",
+      items: productos.filter(
+        (product) => product.precio >= 100 && product.precio <= 200
+      ),
+    });
+  } else {
+    res.status(400).send("No se encontraron productos");
+  }
+});
+
+//filtro max y min
+
+app.get("/filterProductPricemax&min", (req, res) => {
+  const productos = JSON.items;
+  if (productos.length !== 0) {
+    res.status(200).json({
+      description: "Productos entre 100 y 200",
+      items: productos.filter(
+        (product) => product.precio >= 50 && product.precio <= 250
+      ),
+    });
+  } else {
+    res.status(400).send("No se encontraron productos");
+  }
+});
