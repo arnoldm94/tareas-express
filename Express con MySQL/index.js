@@ -92,6 +92,7 @@ app.put("/products/id/:id", (req, res) => {
 app.listen(PORT, () => console.log(`server started at port ${PORT}`));
 
 //Ejercicio 4
+//ver productos
 app.get("/seeAllProducts", (req, res) => {
   const sql = "SELECT * FROM products";
   db.query(sql, (err, result) => {
@@ -104,6 +105,7 @@ app.get("/seeAllProducts", (req, res) => {
   });
 });
 
+//ver categorias
 app.get("/seeAllCategories", (req, res) => {
   const sql = "SELECT * FROM categories";
   db.query(sql, (err, result) => {
@@ -116,6 +118,7 @@ app.get("/seeAllCategories", (req, res) => {
   });
 });
 
+//productos con categoria
 app.get("/seeAllProductswithCategories", (req, res) => {
   const sql =
     "SELECT products.product_name, categories.categorie_name FROM products inner join `categories` on products.`categories_id` = categories.`id`";
@@ -130,6 +133,7 @@ app.get("/seeAllProductswithCategories", (req, res) => {
   });
 });
 
+//Ver por ID producto
 app.get("/products/id/:id", (req, res) => {
   const idreq = req.params.id;
   const sql = `SELECT * FROM products WHERE id = ${idreq}`;
@@ -140,5 +144,59 @@ app.get("/products/id/:id", (req, res) => {
     } else {
       res.status(200).send(result);
     }
+  });
+});
+
+//Descendente
+app.get("/seeAllProductsdescendent", (req, res) => {
+  const sql =
+    "SELECT products.product_name, categories.categorie_name FROM products inner join `categories` on products.`categories_id` = categories.`id` ORDER BY `product_name` DESC";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    const arrayproductsandcategories = [];
+
+    result.forEach((p) => {
+      arrayproductsandcategories.push(p);
+    });
+    res.status(200).send(arrayproductsandcategories);
+  });
+});
+
+//Ver por ID categoria
+app.get("/categories/id/:id", (req, res) => {
+  const idreq = req.params.id;
+  const sql = `SELECT * FROM categories WHERE id = ${idreq}`;
+  db.query(sql, (err, result) => {
+    const err1 = "No existe categoria con este ID";
+    if (result.length == 0) {
+      res.status(400).send(err1);
+    } else {
+      res.status(200).send(result);
+    }
+  });
+});
+
+//select por nombre
+app.get("/products/name/:name", (req, res) => {
+  const namereq = req.params.name;
+
+  const sql = `SELECT * FROM products WHERE product_name = "${namereq}"`;
+  db.query(sql, (err, result) => {
+    const err1 = "No existe producto con este nombre";
+    if (result == 0) {
+      res.status(400).send(err1);
+    } else {
+      res.status(200).send(result);
+    }
+  });
+});
+
+//delete por id
+app.delete("/products/delete/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = `DELETE FROM products WHERE id = ${id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send("Producto borrado...");
   });
 });
